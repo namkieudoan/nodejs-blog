@@ -12,6 +12,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 //HTTP logger
 app.use(morgan('combined'));
 
+app.use(express.urlencoded({
+  extended:true
+}));
+app.use(express.json());
+
 //template engine
 app.engine('hbs', engine({
   extname: '.hbs',
@@ -34,6 +39,10 @@ app.get('/news', (req, res) => {
 
 app.get('/search', (req, res) => {
   res.render('search');
+})
+
+app.post('/search', (req,res)=> {
+  res.send('')
 })
 
 app.listen(port, () => {
