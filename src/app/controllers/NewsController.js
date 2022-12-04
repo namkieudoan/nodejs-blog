@@ -1,12 +1,11 @@
-    class NewController {
-        
-        slug(req,res){
-            res.send('News slug !')
-        }
-
-        index(req,res){
-            res.render('news')
-        }
+class NewController {
+    slug(req, res) {
+        res.send('News slug !');
     }
 
-module.exports = new NewController;
+    index(req, res) {
+        res.render('news');
+    }
+}
+
+module.exports = new NewController();
