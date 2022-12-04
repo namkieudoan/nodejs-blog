@@ -4,8 +4,7 @@ async function connect() {
         await mongoose.connect('mongodb://localhost:27017/f8_education_dev');
         console.log("Connect Sucessfully");
     } catch (error) {
-        console.log("Connect Failure")
-        
+        console.log("Connect Failure");
     }
 }
 
