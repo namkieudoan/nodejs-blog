@@ -1,10 +1,10 @@
 const newRouter = require ('./news');
 const siteRouter = require ('./site');
+const coursesRouter = require ('./courses');
 
 function route(app) {
-    
-    // bởi vì news có slug nên tách thành 2 routes, còn search !?, ...
     app.use('/news', newRouter);
+    app.use('/courses', coursesRouter);
     app.use('/', siteRouter);
 }
 
