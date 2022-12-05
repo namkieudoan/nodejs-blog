@@ -1,19 +1,17 @@
 const Course = require('../modals/course');
+const {multiMongooseToObject} = require('../../ulti/mongoose');
 
     class SiteController {
-        search(req,res){
-            
-            Course.find({}, function (err, courses){
-                if(!err){
-                    res.json(courses);
-                }else{
-                    res.status(400).json({err: "ERRo !"})
-                }
-            })
-
+        index(req,res,error){
+            Course.find({})
+                .then(courses=>{
+                    //convert object contructor of mongoose to object inerral
+                    res.render('home',{ courses: multiMongooseToObject(courses) })
+                })
+                .catch(error => next(error))
         }
-        index(req,res){
-            res.render('home')
+        search(req,res){
+            res.render('search')
         }
     }
 module.exports = new SiteController
