@@ -28,14 +28,31 @@ class CourseController {
     create(req, res,next) {
         res.render('courses/create')
      };
+     
+     //[POST] courses/store
+     store(req, res,next) {
+         const course = Course(req.body);
+         course.save()
+             .then(()=> res.redirect(`/courses/${req.body.slug}`))
+             .catch(next)
+     };
+     
+     //[GET] courses/edit --- lấy thông tin khóa học về 
+    edit(req, res,next) {
+        Course.findById(req.params.id)
+        .then(course=>{
+            res.render('courses/edit',{ course: mongooseToObject(course) })
+        })
+        .catch(next)
+     };
+    
+     //[PUT] courses/:id -- lưu lại thông tin khóa học
+    update(req, res,next) {
+        Course.updateOne({_id: req.params.id},req.body)
+        .then(()=> res.redirect('/me/stored/courses'))
+        .catch(next) 
+     };
 
-    //[POST] courses/store
-    store(req, res,next) {
-        const course = Course(req.body);
-        course.save()
-            .then(()=> res.redirect(`/courses/${req.body.slug}`))
-            .catch(next)
-    };
 
 }
 

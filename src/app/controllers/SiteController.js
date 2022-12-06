@@ -10,7 +10,7 @@ const {multiMongooseToObject} = require('../../ulti/mongoose');
             Course.find({})
                 .then(courses=>{
                     //convert object contructor of mongoose to object inerral
-                    res.render('courses',{ courses: multiMongooseToObject(courses) })
+                    res.render('home',{ courses: multiMongooseToObject(courses) })
                 })
                 .catch(error => next(error))
         }
