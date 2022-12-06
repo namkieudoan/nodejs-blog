@@ -1,5 +1,11 @@
 @import 'variables';
 .header {
     color: #000;
-
+}
+.avatar-user {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    object-fit: cover;
+    margin-right: 8px;
 }
