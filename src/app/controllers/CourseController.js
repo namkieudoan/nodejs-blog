@@ -4,7 +4,7 @@ const {mongooseToObject} = require('../../ulti/mongoose');
 
 class CourseController {
 
-    //[GET] courses/:slug
+    //[GET] courses/:slug 
     slug(req, res,next) {
         Course.findOne({slug: req.params.slug})
             .then(course=> {
@@ -14,7 +14,7 @@ class CourseController {
     };
 
     
-    //[GET] courses/
+    //[GET] courses/ --- render các khóa học về ui
     index(req,res,error){
         Course.find({})
         .then(courses=>{
@@ -24,12 +24,12 @@ class CourseController {
         .catch(error => next(error))
     }
     
-    //[GET] courses/create
+    //[GET] courses/create --- trang tạo khóa học 
     create(req, res,next) {
         res.render('courses/create')
      };
      
-     //[POST] courses/store
+     //[POST] courses/store --- lưu thông tin từ form sang db
      store(req, res,next) {
          const course = Course(req.body);
          course.save()
@@ -37,8 +37,9 @@ class CourseController {
              .catch(next)
      };
      
-     //[GET] courses/edit --- lấy thông tin khóa học về 
-    edit(req, res,next) {
+     //[GET] courses/edit --- lấy thông tin khóa học về view edit, thông tin khóa học được render vào form qua value
+     // 
+    edit(req,res,next){
         Course.findById(req.params.id)
         .then(course=>{
             res.render('courses/edit',{ course: mongooseToObject(course) })
@@ -52,6 +53,13 @@ class CourseController {
         .then(()=> res.redirect('/me/stored/courses'))
         .catch(next) 
      };
+
+     //[delete] course/:id --- xóa khóa học
+     destroy(req,res,next){
+        Course.deleteOne({_id: req.params.id},req.body)
+            .then(()=> res.redirect('back'))
+            .catch(next);
+     }
 
 
 }
