@@ -1,14 +1,12 @@
 <div class="mt-4">
-    <h3>Khóa học của tôi</h3>
-    <a href="/me/trash/courses">  Thùng rác</a>
-    <a href="/courses/create"> Tạo mới khóa học </a>
+    <h3>Khóa học đã xóa</h3>
     <table class="table">
     <thead>
         <tr>
         <th scope="col">STT</th>
         <th scope="col">Tên khóa học</th>
         <th scope="col">Trình độ khóa học</th>
-        <th scope="col">Ngày cập nhật </th>
+        <th scope="col">Ngày xóa </th>
         <th scope="col"> Chỉnh Sửa </th>
         </tr>
     </thead>
@@ -18,16 +16,16 @@
             <th scope="row">{{sum @index 1}}</th>
             <td>{{this.name}}</td>
             <td>{{this.level}}</td>
-            <td>{{this.updatedAt}}</td>
+            <td>{{this.deletedAt}}</td>
             <td>
-                <a href="/courses/{{this._id}}/edit" class="btn btn-link">Sửa</a>
-                <a href="#"  class="btn btn-link"  data-bs-toggle="modal" data-bs-id="{{this._id}}" data-bs-target="#deleteCourseModal">Xóa</a>
+                <a href="" class="btn btn-link restore-btn" data-bs-id="{{this._id}}">Khôi phục</a>
+                <a href="#"  class="btn btn-link"  data-bs-toggle="modal" data-bs-id="{{this._id}}" data-bs-target="#deleteCourseModal">Xóa vĩnh viễn</a>
             </td>
         </tr>
         {{else}}
         <tr>
           <td colspan="5" class="text-center">
-            Bạn chưa có khóa học nào <a href="/courses/create">Thêm khóa học</a>
+            Thùng rác trống <a href="/me/stored/courses">Quay lại danh sách khóa học</a>
           </td>
         </tr>
         {{/each}}
@@ -56,24 +54,41 @@
 
 {{!-- Delete hidden form --}}
 <form method="post" name="delete-course-form" ></form>
+<form method="post" name="restore-course-form" ></form>
 
 {{!-- handle delete course --}}
 <script>
   const deleteCourseModal = document.getElementById('deleteCourseModal');
   const deleteForm = document.forms['delete-course-form'];
+  const restoreForm = document.forms['restore-course-form'];
   var btnDeleteCourse = document.getElementById('btn-delete-course');
+  var btnRestoreAll = document.querySelectorAll('.restore-btn');
+
+  
   var courseId;
 
   // when dialog confirm clicked
   deleteCourseModal.addEventListener('show.bs.modal', event => {
-    const button = event.relatedTarget
+    const button = event.relatedTarget;
     courseId = button.getAttribute('data-bs-id')
   })
 
   // when Btn delete clicked
   btnDeleteCourse.onclick = function (){
-    deleteForm.action = `/courses/${courseId}?_method=DELETE`;
+    deleteForm.action = `/courses/${courseId}/force?_method=DELETE`;
     deleteForm.submit();
   }
 
+  // restore btn clicked
+  btnRestoreAll.forEach((restoreBtn) => {
+        restoreBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+
+            courseId = restoreBtn.getAttribute('data-bs-id');
+            restoreForm.action = '/courses/' + courseId + '/restore?_method=PATCH';
+            restoreForm.submit();
+        });
+  });
+
+  
 </script>

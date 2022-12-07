@@ -54,12 +54,25 @@ class CourseController {
         .catch(next) 
      };
 
-     //[delete] course/:id --- xóa khóa học
-     destroy(req,res,next){
-        Course.deleteOne({_id: req.params.id},req.body)
+     //[delete] course/:id --- xóa khóa học tạm
+    destroy(req,res,next){
+        Course.delete({_id: req.params.id})
             .then(()=> res.redirect('back'))
             .catch(next);
-     }
+    };
+    //[delete] course/:id --- xóa khóa học vĩnh viễn 
+    forceDestroy(req,res,next){
+        Course.deleteOne({_id: req.params.id})
+            .then(()=> res.redirect('/me/stored/courses'))
+            .catch(next);
+    };
+    
+     //[PATCH] course/:id --- restore khóa học 
+    restore(req,res,next){
+        Course.restore({_id: req.params.id})
+            .then(()=> res.redirect('back'))
+            .catch(next);
+    }
 
 
 }
