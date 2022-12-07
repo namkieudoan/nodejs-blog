@@ -1,13 +1,16 @@
 const Course = require('../modals/course');
-const {multiMongooseToObject} = require('../../ulti/mongoose');
+const {multiMongooseToObject, mongooseToObject} = require('../../ulti/mongoose');
 
 class MeController {
 
     //[GET] me/stored/courses
     storedCourses(req, res,next) {
-        Course.find({})
-            .then(courses=> {
-                res.render('me/stored-courses',{ courses: multiMongooseToObject(courses) })
+        Promise.all([Course.find({}),Course.countDocumentsDeleted()])
+            .then(([courses,deleteCount])=> {
+                res.render('me/stored-courses',{
+                    deleteCount, 
+                    courses: multiMongooseToObject(courses) 
+                })
             })
             .catch(next)
     };
